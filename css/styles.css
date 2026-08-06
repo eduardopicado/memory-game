@@ -31,8 +31,8 @@ body {
 }
 
 .app {
-  width: min(1000px, 100%);
-  padding: clamp(14px, 3vw, 32px);
+  width: min(1100px, 100%);
+  padding: clamp(10px, 2vw, 28px);
   display: flex;
   flex-direction: column;
 }
@@ -243,8 +243,30 @@ body {
   display: grid;
   grid-template-columns: repeat(var(--cols, 4), 1fr);
   gap: var(--gap);
-  width: min(100%, 720px);
+  width: 100%;
+  max-width: 980px;
   margin: 0 auto;
+}
+
+/* Touch devices (tablets, phones) also cap the board against the viewport's
+   height, so rotating to landscape shrinks cards to fit rather than just
+   running the board off the bottom of the screen. Desktop windows keep the
+   plain width cap above — a little mouse-wheel scroll there is normal, and
+   pointer:coarse would otherwise needlessly shrink cards in a short-but-wide
+   browser window. */
+@media (pointer: coarse) {
+  .board {
+    /* max() keeps a short landscape phone from shrinking cards past a
+       readable minimum — it scrolls a little there instead. */
+    max-width: min(
+      980px,
+      max(calc(var(--cols, 4) * 84px), calc(((100vh - 118px) / var(--rows, 4)) * 0.75 * var(--cols, 4)))
+    );
+    max-width: min(
+      980px,
+      max(calc(var(--cols, 4) * 84px), calc(((100dvh - 118px) / var(--rows, 4)) * 0.75 * var(--cols, 4)))
+    );
+  }
 }
 
 .card {
@@ -385,6 +407,19 @@ body {
 @media (max-width: 600px) {
   .board { grid-template-columns: repeat(var(--cols-narrow, 4), 1fr); }
   .player-name { max-width: 6ch; }
+}
+
+@media (max-width: 600px) and (pointer: coarse) {
+  .board {
+    max-width: min(
+      980px,
+      max(calc(var(--cols-narrow, 4) * 84px), calc(((100vh - 118px) / var(--rows-narrow, 4)) * 0.75 * var(--cols-narrow, 4)))
+    );
+    max-width: min(
+      980px,
+      max(calc(var(--cols-narrow, 4) * 84px), calc(((100dvh - 118px) / var(--rows-narrow, 4)) * 0.75 * var(--cols-narrow, 4)))
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

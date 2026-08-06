@@ -164,8 +164,13 @@
 
   function buildBoard() {
     el.board.innerHTML = "";
+    var total = state.deck.length;
     el.board.style.setProperty("--cols", settings.cols);
     el.board.style.setProperty("--cols-narrow", settings.colsNarrow);
+    // Row counts let the board cap its own size against viewport height too,
+    // so cards grow to fill a landscape iPad instead of just a portrait one.
+    el.board.style.setProperty("--rows", Math.ceil(total / settings.cols));
+    el.board.style.setProperty("--rows-narrow", Math.ceil(total / settings.colsNarrow));
 
     state.deck.forEach(function (card, index) {
       var btn = document.createElement("button");
