@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memory Game</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2312a150'/><circle cx='16' cy='16' r='7' fill='%23ffcc29'/></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ SETUP SCREEN ============ -->
+  <section id="setup" class="screen">
+    <h1 class="title">Memory</h1>
+    <p class="tagline">Flip two cards. Match the stickers.</p>
+
+    <div class="option-group">
+      <h2>Players</h2>
+      <div class="options" role="radiogroup" aria-label="Number of players">
+        <button class="option is-selected" role="radio" aria-checked="true" data-players="1">
+          <span class="option-icon">1</span>
+          <span class="option-label">Solo</span>
+        </button>
+        <button class="option" role="radio" aria-checked="false" data-players="2">
+          <span class="option-icon">2</span>
+          <span class="option-label">Two players</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="option-group" id="names-group" hidden>
+      <h2>Names</h2>
+      <div class="names">
+        <input type="text" id="name1" maxlength="12" placeholder="Player 1" aria-label="Player 1 name">
+        <input type="text" id="name2" maxlength="12" placeholder="Player 2" aria-label="Player 2 name">
+      </div>
+    </div>
+
+    <div class="option-group">
+      <h2>Board</h2>
+      <div class="options" role="radiogroup" aria-label="Board size">
+        <button class="option" role="radio" aria-checked="false" data-pairs="6" data-cols-narrow="4" data-cols="4">
+          <span class="option-icon">6</span>
+          <span class="option-label">Easy &middot; 12 cards</span>
+        </button>
+        <button class="option is-selected" role="radio" aria-checked="true" data-pairs="8" data-cols-narrow="4" data-cols="4">
+          <span class="option-icon">8</span>
+          <span class="option-label">Normal &middot; 16 cards</span>
+        </button>
+        <button class="option" role="radio" aria-checked="false" data-pairs="10" data-cols-narrow="4" data-cols="5">
+          <span class="option-icon">10</span>
+          <span class="option-label">Hard &middot; 20 cards</span>
+        </button>
+        <button class="option" role="radio" aria-checked="false" data-pairs="15" data-cols-narrow="5" data-cols="6">
+          <span class="option-icon">15</span>
+          <span class="option-label">Expert &middot; 30 cards</span>
+        </button>
+      </div>
+    </div>
+
+    <button id="start-btn" class="primary-btn">Start game</button>
+
+    <p id="deck-note" class="deck-note"></p>
+  </section>
+
+  <!-- ============ GAME SCREEN ============ -->
+  <section id="game" class="screen" hidden>
+    <header class="hud">
+      <button id="menu-btn" class="ghost-btn" title="Back to menu">&#8592; Menu</button>
+
+      <div id="solo-stats" class="stats">
+        <div class="stat"><span class="stat-label">Moves</span><span id="moves" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">Time</span><span id="timer" class="stat-value">0:00</span></div>
+        <div class="stat"><span class="stat-label">Pairs</span><span id="pairs-found" class="stat-value">0/0</span></div>
+      </div>
+
+      <div id="versus-stats" class="stats" hidden>
+        <div class="player-card" id="p1-card">
+          <span class="player-name" id="p1-name">Player 1</span>
+          <span class="player-score" id="p1-score">0</span>
+        </div>
+        <div class="player-card" id="p2-card">
+          <span class="player-name" id="p2-name">Player 2</span>
+          <span class="player-score" id="p2-score">0</span>
+        </div>
+      </div>
+
+      <button id="sound-btn" class="ghost-btn" title="Toggle sound" aria-pressed="true" aria-label="Sound">
+        <svg class="icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+          <path d="M4 9.5v5h3.5L12 18V6L7.5 9.5H4z" fill="currentColor"/>
+          <path class="icon-wave" d="M15.2 8.8a4.5 4.5 0 0 1 0 6.4M17.6 6.4a8 8 0 0 1 0 11.2"
+                stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+          <path class="icon-mute" d="M15.5 9.5l5 5m0-5l-5 5"
+                stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <p id="turn-banner" class="turn-banner" role="status" aria-live="polite" hidden></p>
+
+    <div id="board" class="board" role="group" aria-label="Memory board"></div>
+  </section>
+
+  <!-- ============ RESULT OVERLAY ============ -->
+  <div id="overlay" class="overlay" hidden>
+    <div class="result-card" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <h2 id="result-title">Well done!</h2>
+      <p id="result-detail" class="result-detail"></p>
+      <p id="result-best" class="result-best"></p>
+      <div class="result-actions">
+        <button id="again-btn" class="primary-btn">Play again</button>
+        <button id="overlay-menu-btn" class="ghost-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/cards.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
